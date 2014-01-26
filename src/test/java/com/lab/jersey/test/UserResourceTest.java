@@ -62,7 +62,7 @@ public class UserResourceTest extends BaseTest {
 	@Test
 	public void testUpdate() {
 
-		String userJsonObject = "{ \"id\": \"8\", \"lastName\":\"last name update\",\"name\":\"test name 1\",\"cityId\":\"1\"}";
+		String userJsonObject = "{ \"id\": \"19\", \"lastName\":\"last name update\",\"name\":\"test name 1\",\"cityId\":\"1\"}";
 
 		Response response = service.path("user").path("update")
 				.request(MediaType.APPLICATION_JSON)
@@ -76,7 +76,7 @@ public class UserResourceTest extends BaseTest {
 	@Test
 	public void testDelete() {
 
-		Response response = service.path("user").path("delete/" + 12)
+		Response response = service.path("user").path("delete/" + 15)
 				.request()
 				.post (Entity.text("payload"), Response.class);
 
