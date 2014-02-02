@@ -5,17 +5,14 @@ package com.lab.jersey.service;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import com.lab.jersey.exception.ServiceException;
+import com.lab.jersey.hibernate.HibernateUtil;
 import com.lab.jersey.model.Company;
 
 /**
@@ -26,40 +23,38 @@ import com.lab.jersey.model.Company;
 public class CompanyServiceImpl implements CompanyService {
 
 	private static Logger LOG = Logger.getLogger(CompanyService.class);
-
-	protected EntityManager entityManager;
-	 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-    
-    @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
+	
 	/* (non-Javadoc)
 	 * @see com.lab.jersey.service.CompanyService#getAll()
 	 */
 	@Override
 	public List<Company> getAll() throws ServiceException {
 
+		Session session = null;
 		try {
 
-			CriteriaBuilder criteriaBuilder = getEntityManager()
-					.getCriteriaBuilder();
+			session = HibernateUtil.getSession();
 
-			CriteriaQuery<Company> criteriaQuery = criteriaBuilder
-					.createQuery(Company.class);
-			Root<Company> criteria = criteriaQuery.from(Company.class);
-			CriteriaQuery<Company> all = criteriaQuery.select(criteria);
-	        TypedQuery<Company> allQuery = getEntityManager().createQuery(all);
-	        
-	        return allQuery.getResultList();
+			Criteria criteria = session.createCriteria(Company.class);
 
-		} catch (Exception ex) {
+			return criteria.list();
+
+		} catch (HibernateException ex) {
 			LOG.error("error company get all: " + ex.getMessage(), ex);
 			throw new ServiceException(ex);
+		}
+	}
+
+	@Override
+	public Company getById(Long id) throws ServiceException {
+
+		try {
+			
+			return (Company)HibernateUtil.getSession().get(Company.class, id);
+			
+		} catch (HibernateException ex) {
+			LOG.error("error company get all: " + ex.getMessage(), ex);
+			throw new ServiceException(ex);			
 		}
 	}
 

@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import com.lab.jersey.service.UserService;
+import com.lab.jersey.util.ApplicationConstant;
 
 
 /**
@@ -21,10 +21,14 @@ public class ApplicationContext extends ResourceConfig {
 
 	public ApplicationContext() {
 		
-//		register(UserService.class);
         register(JacksonFeature.class);
-        LOG.info("application initialized");
+		String runtimeEnvironment = System.getProperty(
+				ApplicationConstant.ENVIRONMET_PARAM);
+		if (runtimeEnvironment != null) {	
+			ApplicationConstant.Runtime.ENVIRONMENT.setValue(runtimeEnvironment);		
+		}
+        LOG.info("application initialized - environment " + ApplicationConstant.Runtime.ENVIRONMENT.getValue());
         
-    }
+    }	
 	
 }

@@ -15,5 +15,7 @@ import com.lab.jersey.model.Company;
 public interface CompanyService {
 
 	public List<Company> getAll() throws ServiceException;
+	
+	public Company getById(Long id) throws ServiceException;
 
 }

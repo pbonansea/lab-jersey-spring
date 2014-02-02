@@ -16,4 +16,6 @@ public interface CityService {
 
 	public List<City> getAll() throws ServiceException;
 	
+	public City getByd(Long id) throws ServiceException;
+	
 }

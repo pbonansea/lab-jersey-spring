@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lab.jersey.test;
+package com.lab.jersey.test.resource;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author paolobonansea
  *
  */
-public class CityResourceTest extends BaseTest {
+public class CompanyResourceTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -46,12 +46,12 @@ public class CityResourceTest extends BaseTest {
 	@Test
 	public void testGetAll() {
 
-		Response response = service.path("city")
+		Response response = AllResourcesTest.getWebTargetServiceInstance().path("company")
 				.path("all")
 				.request().get(Response.class);
 
 		assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
-
+		
 	}
 
 }

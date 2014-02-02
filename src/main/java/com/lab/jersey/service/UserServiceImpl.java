@@ -5,20 +5,23 @@ package com.lab.jersey.service;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lab.jersey.exception.ServiceException;
+import com.lab.jersey.hibernate.HibernateUtil;
 import com.lab.jersey.model.User;
 
 /**
@@ -31,139 +34,135 @@ public class UserServiceImpl implements UserService {
 
 	private static Logger LOG = Logger.getLogger(UserService.class);
 
-	protected EntityManager entityManager;
-	 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-    
-    @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-    
     @Transactional
 	@Override
 	public void create(User user) throws ServiceException {
 
-    	try {
-
-    		getEntityManager().persist(user);
-    		
-    	} catch (Exception ex) {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.save(user);
+			tx.commit();
+		} catch (HibernateException ex) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();				
+			}
 			LOG.error("error user create: " + ex.getMessage(), ex);
-			throw new HibernateException(ex);
-    	}
+			throw new ServiceException(ex);
+		} 
 	}
 
     @Transactional
 	@Override
 	public void update(User user) throws ServiceException {
 
-    	try {
-    	
-        	getEntityManager().merge(user);
-
-    	} catch (Exception ex) {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.update(user);
+			tx.commit();
+		} catch (HibernateException ex) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();				
+			}
 			LOG.error("error user update: " + ex.getMessage(), ex);
 			throw new ServiceException(ex);
-    	}
+		}
 	}
 
     @Transactional
 	@Override
 	public void delete(long id) throws ServiceException {
 
+		Session session = HibernateUtil.getSession();
+		Transaction tx = null;
 		try {
-
 			User user = this.getById(id);
 			if (user != null) {
-				getEntityManager().remove(user);
-			}	
-
-		} catch (Exception ex) {
+				tx = session.beginTransaction();
+				session.delete(user);
+				tx.commit();				
+			}
+		} catch (HibernateException ex) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();				
+			}
 			LOG.error("error user delete: " + ex.getMessage(), ex);
-			throw new ServiceException(ex);			
-		}
+			throw new ServiceException(ex);
+		} 
 	}
 
 	@Override
 	public User getById(long id) throws ServiceException {
 
+		Session session = null;
 		try {
 
-			return getEntityManager().find(User.class, id);
+			session = HibernateUtil.getSession();
+			return (User) session.get(User.class, id);
 
-		} catch (Exception ex) {
+		} catch (HibernateException ex) {
 			LOG.error("error user get by id: " + ex.getMessage(), ex);
 			throw new ServiceException(ex);
-		}
+		} 
 	}
 
 	@Override
 	public List<User> getAll() throws ServiceException {
 		
+		Session session = null;
 		try {
 
-			CriteriaBuilder criteriaBuilder = getEntityManager()
-					.getCriteriaBuilder();
+			session = HibernateUtil.getSession();
 
-			CriteriaQuery<User> criteriaQuery = criteriaBuilder
-					.createQuery(User.class);
-			Root<User> criteria = criteriaQuery.from(User.class);
-			CriteriaQuery<User> all = criteriaQuery.select(criteria);
-	        TypedQuery<User> allQuery = getEntityManager().createQuery(all);
-	        
-	        return allQuery.getResultList();
-			
-		} catch (Exception ex) {
+			Criteria criteria = session.createCriteria(User.class);
+
+			return criteria.list();
+
+		} catch (HibernateException ex) {
 			LOG.error("error user get all: " + ex.getMessage(), ex);
-			throw new ServiceException(ex);	
-		}		
+			throw new ServiceException(ex);
+		}
 	}
 
 	@Override
 	public List<User> getByCityId(long cityId) throws ServiceException {
 		
+		Session session = null;
 		try {
 
-			CriteriaBuilder criteriaBuilder = getEntityManager()
-					.getCriteriaBuilder();
+			session = HibernateUtil.getSession();
 
-			CriteriaQuery<User> criteriaQuery = criteriaBuilder
-					.createQuery(User.class);
-			Root<User> criteria = criteriaQuery.from(User.class);
-			criteriaQuery.where(
-					criteriaBuilder.equal(criteria.get("cityId"), cityId));
+			Criteria criteria = session.createCriteria(User.class).add(
+					Restrictions.eq("cityId", cityId));
 
-			return getEntityManager().createQuery(criteriaQuery).getResultList();
+			return criteria.list();
 
-		} catch (Exception ex) {
+		} catch (HibernateException ex) {
 			LOG.error("error user get by city id: " + ex.getMessage(), ex);
-			throw new ServiceException(ex);	
-		}
+			throw new ServiceException(ex);
+		} 
 	}
 
 	@Override
 	public List<User> getByCityIdCompanyId(long cityId, long companyId) throws ServiceException {
 
+		Session session = null;
 		try {
 
-			CriteriaBuilder criteriaBuilder = getEntityManager()
-					.getCriteriaBuilder();
+			session = HibernateUtil.getSession();
 
-			CriteriaQuery<User> criteriaQuery = criteriaBuilder
-					.createQuery(User.class);
-			Root<User> criteria = criteriaQuery.from(User.class);
-			criteriaQuery.where(
-					criteriaBuilder.equal(criteria.get("cityId"), cityId),
-					criteriaBuilder.equal(criteria.get("companyId"), companyId));
+			Criteria criteria = session.createCriteria(User.class).add(
+					Restrictions.eq("cityId", cityId))
+					.add(Restrictions.eq("companyId", companyId));
 
-			return getEntityManager().createQuery(criteriaQuery).getResultList();
+			return criteria.list();
 
-		} catch (Exception ex) {
+		} catch (HibernateException ex) {
 			LOG.error("error user get by city id and company id: " + ex.getMessage(), ex);
-			throw new ServiceException(ex);	
+			throw new ServiceException(ex);
 		}
 	}
 

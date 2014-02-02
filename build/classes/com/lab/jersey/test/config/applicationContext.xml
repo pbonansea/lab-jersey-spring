@@ -14,12 +14,12 @@
          		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<context:component-scan
-		base-package="com.lab.jersey.service, com.lab.jersey.filter, com.lab.jersey.security" />
+		base-package="com.lab.jersey.service" />
 
 	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="changeLog" value="classpath:changelog-db.xml"></property>
-		<property name="contexts" value="production"></property>
+		<property name="changeLog" value="classpath:/com/lab/jersey/test/config/changelog-db.xml"></property>
+		<property name="contexts" value="test"></property>
 	</bean>
 
 	<bean id="dataSource"
@@ -29,30 +29,7 @@
 		<property name="username" value="${hibernate.connection.username}" />
 		<property name="password" value="${hibernate.connection.password}" />
 	</bean>
-	<context:property-placeholder location="classpath:hibernate.properties" />
 
-<!-- 	spring security (disabled) -->
-<!-- 	<security:global-method-security -->
-<!-- 		pre-post-annotations="enabled" /> -->
-
-<!-- 	<security:http auto-config="true" use-expressions="true"> -->
- 		<!-- <security:intercept-url pattern="**/login*" access="permitAll" /> -->
- 		<!-- <security:intercept-url pattern="/user/**" access="hasRole('ROLE_USER')/>" --> 			 
-<!-- 		<security:intercept-url pattern="/company/**" -->
-<!-- 			access="hasRole('ROLE_COMPANY')" /> -->
-<!-- 		<security:intercept-url pattern="/city/**" -->
-<!-- 			access="hasRole('ROLE_CITY')" /> -->
-<!-- 		<security:logout logout-url="/logout" /> -->
- 		<!-- <form-login login-processing-url="/login" -->
- 		<!-- username-parameter="username" -->
- 		<!-- password-parameter="password" -->
- 		<!-- login-page="/login.html" -->
- 		<!-- /> -->
-<!-- 	</security:http> -->
-
-<!-- 	<security:authentication-manager alias="authenticationManager"> -->
-<!-- 		<security:authentication-provider -->
-<!-- 			ref="customAuthenticationProvider" /> -->
-<!-- 	</security:authentication-manager> -->
+	<context:property-placeholder location="classpath:/com/lab/jersey/test/config/hibernateTest.properties" />
 
 </beans>
