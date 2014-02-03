@@ -9,7 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import com.lab.jersey.model.User;
-import com.lab.jersey.security.Role;
+import com.lab.jersey.security.Session;
 
 /**
  * @author paolobonansea
@@ -43,13 +43,13 @@ public class SecurityContext implements javax.ws.rs.core.SecurityContext  {
 	@Override
 	public boolean isUserInRole(String role) {
 		if (null == session || !session.isActive()) {
-            // Forbidden
-            Response denied = Response.status(Response.Status.FORBIDDEN).entity("Permission Denied").build();
+            // forbidden
+            Response denied = Response.status(Response.Status.FORBIDDEN)
+            		.entity("permission Denied").build();
             throw new WebApplicationException(denied);
         }
  
         try {
-            // this user has this role?
             return true; // user. getRoles().contains(Role.class);
         } catch (Exception e) {
         }

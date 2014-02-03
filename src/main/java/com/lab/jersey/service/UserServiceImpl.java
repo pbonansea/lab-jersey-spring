@@ -5,20 +5,14 @@ package com.lab.jersey.service;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.lab.jersey.exception.ServiceException;
 import com.lab.jersey.hibernate.HibernateUtil;
@@ -34,7 +28,6 @@ public class UserServiceImpl implements UserService {
 
 	private static Logger LOG = Logger.getLogger(UserService.class);
 
-    @Transactional
 	@Override
 	public void create(User user) throws ServiceException {
 
@@ -53,7 +46,6 @@ public class UserServiceImpl implements UserService {
 		} 
 	}
 
-    @Transactional
 	@Override
 	public void update(User user) throws ServiceException {
 
@@ -72,7 +64,6 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-    @Transactional
 	@Override
 	public void delete(long id) throws ServiceException {
 

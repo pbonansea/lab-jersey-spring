@@ -5,16 +5,16 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"
         logicalFilePath="db.changelog.xml">
 
- 	<changeSet id="26" author="lab-jersey" context="test">
-		<sqlFile path="com/lab/jersey/sql/test_create_table.sql"/>
+ 	<changeSet id="35" author="lab-jersey" context="test">
+		<sqlFile path="com/lab/jersey/test/sql/test_create_table.sql"/>
 	</changeSet>
     
- 	<changeSet id="27" author="lab-jersey" context="test">
-		<sqlFile path="com/lab/jersey/sql/test_insert.sql"/>
+ 	<changeSet id="33" author="lab-jersey" context="test">
+		<sqlFile path="com/lab/jersey/test/sql/test_insert.sql"/>
 	</changeSet>
 
- 	<changeSet id="28" author="lab-jersey" context="test">
-		<sqlFile path="com/lab/jersey/sql/test_update.sql"/>
+ 	<changeSet id="34" author="lab-jersey" context="test">
+		<sqlFile path="com/lab/jersey/sql/test/test_update.sql"/>
 	</changeSet>
 	
 </databaseChangeLog>

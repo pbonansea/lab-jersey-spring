@@ -27,11 +27,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		User user = userServiceDetail.loadUserByUsername(username);
 
         if (user == null) {
-                throw new BadCredentialsException("Username not found.");
+                throw new BadCredentialsException("username not found.");
         }
 
         if (!password.equals(user.getPassword())) {
-                throw new BadCredentialsException("Wrong password.");
+                throw new BadCredentialsException("wrong password.");
         }
 		
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();

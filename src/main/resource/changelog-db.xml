@@ -5,11 +5,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"
         logicalFilePath="db.changelog.xml">
     
- 	<changeSet id="7" author="lab-jersey" context="production">
+ 	<changeSet id="12" author="lab-jersey" context="production">
 		<sqlFile path="com/lab/jersey/sql/test_insert.sql"/>
 	</changeSet>
 
- 	<changeSet id="11" author="lab-jersey" context="production">
+ 	<changeSet id="13" author="lab-jersey" context="production">
 		<sqlFile path="com/lab/jersey/sql/test_update.sql"/>
 	</changeSet>
 	

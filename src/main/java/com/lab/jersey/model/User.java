@@ -5,7 +5,6 @@ package com.lab.jersey.model;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +17,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.lab.jersey.security.Role;
-
 /**
  * @author paolobonansea
  *
@@ -28,8 +25,6 @@ import com.lab.jersey.security.Role;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "user_test")  
-//@Cacheable
-//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User implements Serializable, Principal {
 	
 	@XmlElement
@@ -163,8 +158,4 @@ public class User implements Serializable, Principal {
         return true;
     }
 		
-//	public enum Role {
-//        ADMIN, PORTAL, GUESS
-//    };
-    
 }

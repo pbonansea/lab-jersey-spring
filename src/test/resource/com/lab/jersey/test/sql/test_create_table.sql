@@ -1,7 +1,5 @@
-CREATE TABLE IF NOT EXISTS city
+CREATE TABLE company
 (
-   id     bigint(5),
-   name   varchar(100)
-);
-
-Alter table city modify id bigint(5) AUTO_INCREMENT PRIMARY KEY;
+   id     bigint(20),
+   name   varchar(50)
+)

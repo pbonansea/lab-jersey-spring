@@ -9,7 +9,7 @@ package com.lab.jersey.util;
  */
 public final class ApplicationConstant {
 
-	public static final String ENVIRONMET_PARAM = "jersey.runtime.environment";
+	public static final String ENVIRONMET_PARAM = "spring.profiles.active"; 
 	
 	public enum Runtime {
 		
@@ -39,6 +39,5 @@ public final class ApplicationConstant {
 		}
 		
 	}
-
 	
 }

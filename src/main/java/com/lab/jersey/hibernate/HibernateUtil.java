@@ -33,7 +33,7 @@ public class HibernateUtil {
 		try {
 			configuration = new Configuration().configure();
 			if (ApplicationConstant.Runtime.ENVIRONMENT.getValue()
-					.equals(ApplicationConstant.Runtime.DEV_ENVIRONMENT.getValue())) {
+					.equals(ApplicationConstant.Runtime.TEST_ENVIRONMENT.getValue())) {
 				try {
 					Properties hibernateProp = new Properties();
 					hibernateProp.load(HibernateUtil.class.getResourceAsStream(

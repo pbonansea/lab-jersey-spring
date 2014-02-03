@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lab.jersey.context;
+package com.lab.jersey.security;
 
 import java.io.Serializable;
 import java.util.Date;

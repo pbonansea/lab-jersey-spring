@@ -63,7 +63,7 @@ public class UserResourceTest {
 	@Test
 	public void testUpdate() {
 
-		String userJsonObject = "{ \"id\": \"19\", \"lastName\":\"last name update\",\"name\":\"test name 1\",\"cityId\":\"1\"}";
+		String userJsonObject = "{ \"id\": \"4\", \"lastName\":\"last name update\",\"name\":\"test name 1\",\"cityId\":\"1\"}";
 
 		Response response = AllResourcesTest.getWebTargetServiceInstance().path("user").path("update")
 				.request(MediaType.APPLICATION_JSON)

@@ -5,32 +5,49 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
                 http://www.springframework.org/schema/beans 
-                http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                 http://www.springframework.org/schema/util 
-                http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                http://www.springframework.org/schema/util/spring-util-3.2.xsd
                 http://www.springframework.org/schema/context
-         		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         		http://www.springframework.org/schema/context/spring-context-3.2.xsd
          		http://www.springframework.org/schema/security
          		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<context:component-scan
 		base-package="com.lab.jersey.service, com.lab.jersey.filter, com.lab.jersey.security" />
+	
+	<beans profile="pro">
+	 	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+			<property name="dataSource" ref="dataSource"></property>
+			<property name="changeLog" value="classpath:changelog-db.xml"></property>
+			<property name="contexts" value="production"></property>
+		</bean>
+		<bean id="dataSource"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="${hibernate.connection.driver_class}" />
+			<property name="url" value="${hibernate.connection.url}" />
+			<property name="username" value="${hibernate.connection.username}" />
+			<property name="password" value="${hibernate.connection.password}" />
+		</bean>
+		<context:property-placeholder location="classpath:hibernate.properties" />	
+	</beans>
 
-	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="changeLog" value="classpath:changelog-db.xml"></property>
-		<property name="contexts" value="production"></property>
-	</bean>
-
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${hibernate.connection.driver_class}" />
-		<property name="url" value="${hibernate.connection.url}" />
-		<property name="username" value="${hibernate.connection.username}" />
-		<property name="password" value="${hibernate.connection.password}" />
-	</bean>
-	<context:property-placeholder location="classpath:hibernate.properties" />
-
+	<beans profile="test">
+		<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+			<property name="dataSource" ref="dataSource"></property>
+			<property name="changeLog" value="classpath:/com/lab/jersey/test/config/changelog-db.xml"></property>
+			<property name="contexts" value="test"></property>
+		</bean>
+		<bean id="dataSource"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="${hibernate.connection.driver_class}" />
+			<property name="url" value="${hibernate.connection.url}" />
+			<property name="username" value="${hibernate.connection.username}" />
+			<property name="password" value="${hibernate.connection.password}" />
+		</bean>
+		<context:property-placeholder location="classpath:/com/lab/jersey/test/config/hibernateTest.properties" />
+	</beans>
+	
 <!-- 	spring security (disabled) -->
 <!-- 	<security:global-method-security -->
 <!-- 		pre-post-annotations="enabled" /> -->
